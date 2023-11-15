@@ -5,10 +5,10 @@ load_dotenv()
 
 API_ID = os.getenv("API_ID", "6435225")
 API_HASH = os.getenv("API_HASH", "4e984ea35f854762dcde906dce426c2d")
-BOT_TOKEN = os.getenv("BOT_TOKEN", 6521122303:AAGdyLj18kobnkCTkwPwMkeFRRW3z4-YO9U)
+BOT_TOKEN = os.getenv("BOT_TOKEN", "6521122303:AAGdyLj18kobnkCTkwPwMkeFRRW3z4-YO9U")
 SUDOERS = list(map(int, os.getenv("SUDOERS", 0).split()))
-MONGO_URL = os.getenv("MONGO_URL", mongodb+srv://teamdaxx123:teamdaxx123@cluster0.ysbpgcp.mongodb.net/?retryWrites=true&w=majority)
-LOG_GROUP_ID = os.getenv("LOG_GROUP_ID", -1001802990747)
+MONGO_URL = os.getenv("MONGO_URL", "mongodb+srv://teamdaxx123:teamdaxx123@cluster0.ysbpgcp.mongodb.net/?retryWrites=true&w=majority")
+LOG_GROUP_ID = os.getenv("LOG_GROUP_ID", "-1001802990747")
 MUST_JOIN = os.getenv("MUST_JOIN", "HEROKUFREECC")
 DISABLED = list(map(int, os.getenv("DISABLED", "").split()))
 
