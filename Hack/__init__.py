@@ -15,7 +15,7 @@ bot = TelegramClient('Hack', env.API_ID,
 
 async def initiate_bot():
     global botname, botusername
-    LOGGER(__name__).info('STARTING BOT')
+    LOGGER(__name__).info('**STARTING BOT**')
     try:
         await bot.start()
     except Exception as e:
@@ -29,12 +29,12 @@ async def initiate_bot():
         botname = getme.first_name
     if env.LOG_GROUP_ID:
         try:
-            await bot.send_message(env.LOG_GROUP_ID, f'{botname} has started')
+            await bot.send_message(env.LOG_GROUP_ID, f'**{botname} has started**')
         except Exception as e:
             LOGGER(__name__).error(
                 f'\033[31mBot Is Unable To Send Message In Log Group Please Check\n{e}'
             )
             sys.exit(0)
-    LOGGER(__name__).info(f'BOT STARTED AS {botname}')
+    LOGGER(__name__).info(f'**BOT STARTED AS {botname}**')
 
 loop.run_until_complete(initiate_bot())
