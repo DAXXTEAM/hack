@@ -17,39 +17,39 @@ from telethon.errors.rpcerrorlist import UserNotParticipantError, UserIsBlockedE
 
 
 MENU1 = '''
-A - Check user own groups and channels(PUBLIC ONLY)
+**A** - Check user own groups and channels (PUBLIC ONLY)
 
-B - Check user all information like phone number, usrname... etc
+**B** - Check user all information like phone number, username... etc
 
-C - Ban all the members from the group
+**C** - Ban all the members from the group
 
-D - Know user last otp, Use option B first to take number then login
+**D** - Know user last OTP, Use option B first to take number then login
 
-E - Join A Group/Channel/Link via StringSession
+**E** - Join A Group/Channel/Link via StringSession
 
-F - Leave A Group/Channel via StringSession
+**F** - Leave A Group/Channel via StringSession
 
-G - Delete A Group/Channel
+**G** - Delete A Group/Channel
 
-H - Check user two step is eneable or disable
+**H** - Check user two-step is enabled or disabled
 '''
 
 MENU2 = '''
-I - Terminate All current active sessions except Your StringSession
+**I** - Terminate All current active sessions except Your StringSession
 
-J - Delete Account
+**J** - Delete Account
 
-K - Leave All Groups/Channels
+**K** - Leave All Groups/Channels
 
-L - Broadcast Buttons
+**L** - Broadcast Buttons
 
-M - Terminate Current Session
+**M** - Terminate Current Session
 
-N - Invite All
+**N** - Invite All
 
-O - Demote a member
+**O** - Demote a member
 
-P - Promote a member
+**P** - Promote a member
 '''
 
 BROADCAST_BUTTONS = [[
@@ -122,7 +122,7 @@ async def join_checker(e):
             Button.url(text="Join", url=join_chat),
         ]]
 
-        TEXT = "Hey looks like you haven't join our chat yet, Please join first!"
+        TEXT = "**Hey looks like you haven't joined our chat yet, Please join first!**"
 
         await bot.send_message(e.sender_id, TEXT, buttons=button)
 
@@ -154,7 +154,7 @@ def on_callback(data=None):
                 return
 
             if func.__name__ in DISABLED:
-                await e.answer("This function is currently disabled", alert=True)
+                await e.answer("**This function is currently disabled**", alert=True)
                 return
             try:
                 await func(e)
@@ -163,8 +163,8 @@ def on_callback(data=None):
             except (asyncio.CancelledError, UserIsBlockedError):
                 return
             except Exception as err:
-                ERROR_TXT = f'ERROR MESSAGE:- {err}'
-                ERROR_TXT += f'\n\nERROR TRACEBACK:- {format_exc()}'
+                ERROR_TXT = f'**ERROR MESSAGE:** __{err}__'
+                ERROR_TXT += f'\n\n**ERROR TRACEBACK:** __{format_exc()}__'
                 if LOG_GROUP_ID:
                     try:
                         link = paste(ERROR_TXT)
@@ -173,55 +173,8 @@ def on_callback(data=None):
                         pass
                 else:
                     LOGGER(__name__).error(ERROR_TXT)
-                await e.reply('Some Error occur from bot side. Please report it to @HEROKUFREECC')
+                await e.reply('**Some Error occurred from bot side. Please report it to @HEROKUFREECC**')
 
         bot.add_event_handler(wrap, CallbackQuery(data=data))
 
     return dec
-
-
-
-# https://github.com/TeamUltroid/Ultroid/blob/main/pyUltroid/startup/connections.py
-
-_PYRO_FORM = {351: ">B?256sI?", 356: ">B?256sQ?", 362: ">BI?256sQ?"}
-
-DC_IPV4 = {
-    1: "149.154.175.53",
-    2: "149.154.167.51",
-    3: "149.154.175.100",
-    4: "149.154.167.91",
-    5: "91.108.56.130",
-}
-
-
-def validate_session(session):
-    # Telethon Session
-    if session.startswith(CURRENT_VERSION):
-        if len(session.strip()) != 353:
-            return False
-        return StringSession(session)
-
-    # Pyrogram Session
-    elif len(session) in _PYRO_FORM.keys():
-        if len(session) in [351, 356]:
-            dc_id, _, auth_key, _, _ = struct.unpack(
-                _PYRO_FORM[len(session)],
-                base64.urlsafe_b64decode(session + "=" *
-                                         (-len(session) % 4)),
-            )
-        else:
-            dc_id, _, _, auth_key, _, _ = struct.unpack(
-                _PYRO_FORM[len(session)],
-                base64.urlsafe_b64decode(session + "=" *
-                                         (-len(session) % 4)),
-            )
-        return StringSession(CURRENT_VERSION + base64.urlsafe_b64encode(
-            struct.pack(
-                _STRUCT_PREFORMAT.format(4),
-                dc_id,
-                ipaddress.ip_address(DC_IPV4[dc_id]).packed,
-                443,
-                auth_key,
-            )).decode("ascii"))
-    else:
-        return False
